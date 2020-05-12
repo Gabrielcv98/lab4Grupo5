@@ -116,11 +116,15 @@ public class EmployeeController {
     @PostMapping("/search")
     public String buscar ( @RequestParam("search") String search ,Model model){
 
+<<<<<<< HEAD
+        return "";
+=======
         model.addAttribute("listaEmployee", employeesRepository.obtenerFiltroEmpleado(search));
         model.addAttribute("listaJefes", employeesRepository.obtenerFiltroEmpleado(search));
         model.addAttribute("listaJobs", jobsRepository.findAll());
         model.addAttribute("listaDepartments", departmentsRepository.findAll());
         return "employee/lista";
+>>>>>>> dd8c1f845ff65e4d3fa07753cae9cc55746f3eb9
     }
 
 }

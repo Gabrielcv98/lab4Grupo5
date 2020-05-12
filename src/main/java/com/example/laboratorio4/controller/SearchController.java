@@ -1,12 +1,17 @@
 package com.example.laboratorio4.controller;
 
 
+import com.example.laboratorio4.repository.EmployeesRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/Search")
 public class SearchController {
+    @Autowired
+    EmployeesRepository employeesRepository;
 
 
     @GetMapping(value = {"","/"})
@@ -15,16 +20,21 @@ public class SearchController {
     }
 
     @GetMapping(value = {"/Salario"})
-    public String listaEmpleadosMayorSalrio (){
+    public String listaEmpleadosMayorSalrio (Model model){
 
-      //COMPLETAR
+        model.addAttribute("listaMayorSalario", employeesRepository.empleadoMayor());
         return "Search/lista2";
     }
 
     @PostMapping("/busqueda")
     public String buscar (){
+<<<<<<< HEAD
+
+
+=======
 return "";
         //COMPLETAR
+>>>>>>> dd8c1f845ff65e4d3fa07753cae9cc55746f3eb9
     }
 
     @GetMapping(value = "/Filtro2")
