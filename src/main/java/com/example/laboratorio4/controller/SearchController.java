@@ -28,8 +28,13 @@ public class SearchController {
 
     @PostMapping("/busqueda")
     public String buscar (){
+<<<<<<< HEAD
 
 
+=======
+return "";
+        //COMPLETAR
+>>>>>>> dd8c1f845ff65e4d3fa07753cae9cc55746f3eb9
     }
 
     @GetMapping(value = "/Filtro2")

@@ -39,10 +39,12 @@ public class EmployeeController {
     }
 
     @GetMapping("/new")
-    public String nuevoEmployeeForm() {
-        //COMPLETAR
-        return "employee/Frm";
-    }
+        public String nuevoEmployeeForm( @ModelAttribute("employee") Employees employee , Model model) {
+            model.addAttribute("listaJobs", jobsRepository.findAll());
+            model.addAttribute("listaJefes", employeesRepository.findAll());
+            model.addAttribute("listaDepartment", departmentsRepository.findAll());
+            return "employee/form";
+        }
 
     @PostMapping("/save")
     public String guardarEmployee(@ModelAttribute("employees") @Valid Employees employees, BindingResult bindingResult,
@@ -53,10 +55,8 @@ public class EmployeeController {
             model.addAttribute("listaJobs", jobsRepository.findAll());
             model.addAttribute("listaJefes", employeesRepository.findAll());
             model.addAttribute("listaDepartments", departmentsRepository.findAll());
-            return "employee/Frm";
-        }else {
-
-            if (employees.getEmployeeid() == 0) {
+            return "employee/form";
+        }else  if (employees.getEmployeeid() == 0) {
                 attr.addFlashAttribute("msg", "Empleado creado exitosamente");
                 employees.setHiredate(new Date());
                 employeesRepository.save(employees);
@@ -74,12 +74,28 @@ public class EmployeeController {
                 return "redirect:/employee";
             }
         }
-    }
+
 
     @GetMapping("/edit")
-    public String editarEmployee() {
+    public String editarEmployee(Model model, @ModelAttribute("employee") Employees employee,@RequestParam("id") int employeeid , RedirectAttributes attr) {
 
-        //COMPLETAR
+        Optional<Employees> opt = employeesRepository.findById(employeeid);
+        if (opt.isPresent()) {
+            employee =opt.get();
+            if(employee.getManager().getEmployeeid() == 0){
+                attr.addFlashAttribute("msg", "Esta acción no está soportada por el momento para Empleados sin jefe");
+                return "redirect:/employee";
+            } else {
+                model.addAttribute("employee",employee);
+                model.addAttribute("listaJobs", jobsRepository.findAll());
+                model.addAttribute("listaJefes", employeesRepository.findAll());
+                model.addAttribute("listaDepartments", departmentsRepository.findAll());
+                return "employee/form";
+            }
+
+        } else {
+            return "redirect:/employee";
+        }
     }
 
     @GetMapping("/delete")
@@ -98,9 +114,17 @@ public class EmployeeController {
     }
 
     @PostMapping("/search")
-    public String buscar (){
+    public String buscar ( @RequestParam("search") String search ,Model model){
 
+<<<<<<< HEAD
         return "";
+=======
+        model.addAttribute("listaEmployee", employeesRepository.obtenerFiltroEmpleado(search));
+        model.addAttribute("listaJefes", employeesRepository.obtenerFiltroEmpleado(search));
+        model.addAttribute("listaJobs", jobsRepository.findAll());
+        model.addAttribute("listaDepartments", departmentsRepository.findAll());
+        return "employee/lista";
+>>>>>>> dd8c1f845ff65e4d3fa07753cae9cc55746f3eb9
     }
 
 }

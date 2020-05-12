@@ -9,40 +9,49 @@
         <title>Lista de Empleados</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Lista de Empleados</h1>
-        <a class="btn btn-primary mt-4 mb-4" th:href="@{}">Nuevo Empleado</a>  <!-- COMPLETAR -->
-        <!-- COMPLETAR -->
-        </form>
-        <!-- COMPLETAR -->
-             <table class="table">  <!-- COMPLETAR -->
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Cargo</th>
-                    <th>Departamento</th>
-                    <th>Ciudad</th>
-                    <th></th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="employee, info : ${listaEmployee}">
-                    <td th:text="${info.index + 1}"></td>
-                    <td th:text="${employee.firstname}"></td>
-                    <td th:text="${employee.lastname}"></td>
-                    <td th:text="${employee.jobid.jobtitle}"></td>
-                    <td th:text="${employee.departmentid.departmentname}"></td>
-                    <td th:text="${employee.departmentid.locationid.city}"></td>
-                    <td><a class="btn btn-primary" th:href="@{'/employee/edit' + '?id=' + ${employee.employeeid}}">Editar</a>
-                    </td>
-                    <td><a class="btn btn-danger" th:href="@{'/employee/delete' + '?id=' + ${employee.employeeid}}">Borrar</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+<div class="container">
+    <h1>Lista de Empleados</h1>
+    <a class="btn btn-primary mt-4 mb-4" th:href="@{'/employee/new'}">Nuevo Empleado</a>
+    <form class="input-group mb-lg-3" method="post" th:action="@{'/employee/search'}">
+        <input type="text" class="form-control" placeholder="Texto a buscar" name="search">
+        <div class="input-group-append">
+            <button class="btn btn-outline-primary ml-2 mr-2" type="submit">Buscar</button>
+            <a th:href="@{'/employee'}" class="btn btn-outline-danger">Limpiar</a>
         </div>
-    </body>
+    </form>
+
+    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+    <div th:if="${listaEmployee.size() == 0}" class="alert alert-success" role="alert">No hay resultados para la búsqueda</div>
+    <table class="table table-sm" th:if="${listaEmployee.size() != 0}">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Puesto</th>
+            <th>Departamento</th>
+            <th>Ciudad</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee, info : ${listaEmployee}">
+            <td th:text="${info.index + 1}"></td>
+            <td th:text="${employee.firstname}"></td>
+            <td th:text="${employee.lastname}"></td>
+            <td th:text="${employee.job.jobtitle}"></td>
+            <td th:text="${employee.department.departmentname}"></td>
+            <td th:text="${employee.department.locationid.city}"></td>
+            <td><a class="btn btn-primary" th:href="@{'/employee/edit' + '?id=' + ${employee.employeeid}}">Editar</a>
+            </td>
+            <td><a class="btn btn-danger" th:href="@{'/employee/delete' + '?id=' + ${employee.employeeid}}">Borrar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
 </html>
+
+
